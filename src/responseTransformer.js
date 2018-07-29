@@ -1,52 +1,28 @@
-const responseTransformer = function(config, cheerio) {
+const responseTransformer = function(config, urlBuilder, cheerio) {
+  const getWord = require('./responseTransformer/word')(urlBuilder);
+  const getExamples = require('./responseTransformer/examples')(urlBuilder);
+
   return function(responseBody, query) {
     const $ = cheerio.load(responseBody);
+    const $container = $('.exact');
 
-    const translation = {};
+    const getWords = function() {
+      const $wordContainers = $container.find('.lemma');
+      const words = [];
+      $wordContainers.each(function(index, wordContainer) {
+        words.push(getWord($(wordContainer)));
+      });
 
-    const pos = $('.exact')
-      .find('.translation_desc')
-      .map(function() {
-        const trans = $(this).find('.tag_trans');
-        const text = trans.find('.dictLink').text();
-        const type = trans.find('.tag_type').text();
-        const obj = {};
-        // obj[type] = text;
-        try {
-          translation[type].push(text);
-        } catch (err) {
-          translation[type] = [];
-          translation[type].push(text);
-        }
-        obj.type = type;
-        obj.translation = text;
-        return obj;
-      })
-      .get();
-
-    const audios = $('.exact')
-      .find('.lemma_desc')
-      .map(function() {
-        return JSON.parse(
-          $(this)
-            .find('.audio')
-            .attr('onclick')
-            .replace('playSound(this,', '[')
-            .replace(');', ']')
-        );
-      })
-      .get();
-
-    const resp = {
-      word: query,
-      audio:
-        typeof audios[0] === 'undefined'
-          ? null
-          : `${config.domain}/mp3/` + audios[0],
-      pos: translation
+      return words;
     };
 
-    return resp;
+    const $examples = $('.example_lines');
+
+    return {
+      query: query,
+      words: getWords(),
+      examples: getExamples($examples)
+    };
   };
 };
 
