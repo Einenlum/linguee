@@ -21,33 +21,149 @@ var linguee = require('linguee');
 
 linguee.translate('money', { from: 'eng', to: 'por' }, function(resp) {
   console.log(resp);
-  /*
-	OUTPUT	
-	{  
-	   word:'pretty',
-	   audio:'http://www.linguee.com/mp3/EN_US/2f/2f0e7ef29748dbf6dacf8381c4cc921c-300',
-	   pos:{  
-	      adj:[  
-	         'bonito',
-	         'lindo',
-	         'belo',
-	         'agradáveis',
-	         'elegante',
-	         'atraente',
-	         'agradável',
-	         'considerável',
-	         'venusto'
-	      ],
-	      adv:[  
-	         'bastante',
-	         'bem',
-	         'praticamente',
-	         'consideravelmente'
-	      ]
-	   }
-	}
-	*/
-});
+  /** Outputs :
+    {
+      query: 'money',
+      words: [
+        {
+          term: 'money',
+          audio:
+            'http://www.linguee.com/mp3/EN_US/97/9726255eec083aa56dc0449a21b33190-101',
+          additionalInfo: null,
+          type: 'noun',
+          translations: [
+            {
+              term: 'dinheiro',
+              audio:
+                'http://www.linguee.com/mp3/PT_BR/79/79de84b440a2419610355782ac900622-106',
+              type: 'm',
+              alternatives: [],
+              examples: [
+                {
+                  from: 'My friend still owes me some money. ',
+                  to: 'Meu amigo ainda me deve algum dinheiro.',
+                },
+                {
+                  from: 'I want to withdraw money from my account.',
+                  to: 'Eu quero retirar dinheiro da minha conta.',
+                },
+              ],
+            },
+          ],
+          lessCommonTranslations: [
+            {
+              term: 'capital',
+              type: 'm',
+              usage: null,
+            },
+            {
+              term: 'moeda',
+              type: 'f',
+              usage: null,
+            },
+            {
+              term: 'verba',
+              type: 'f',
+              usage: null,
+            },
+            {
+              term: 'riqueza',
+              type: 'f',
+              usage: null,
+            },
+            {
+              term: 'numerário',
+              type: 'm',
+              usage: null,
+            },
+            {
+              term: 'fortuna',
+              type: 'f',
+              usage: null,
+            },
+          ],
+        },
+        {
+          term: 'money',
+          audio:
+            'http://www.linguee.com/mp3/EN_UK/97/9726255eec083aa56dc0449a21b33190-0',
+          additionalInfo: null,
+          type: 'noun as adjective',
+          translations: [],
+          lessCommonTranslations: [
+            {
+              term: 'monetário',
+              type: 'adj',
+              usage: null,
+            },
+            {
+              term: 'financeira',
+              type: 'adj',
+              usage: null,
+            },
+            {
+              term: 'monetária',
+              type: 'adj',
+              usage: null,
+            },
+            {
+              term: 'cambial',
+              type: 'adj',
+              usage: null,
+            },
+          ],
+        },
+      ],
+      examples: [
+        {
+          from: {
+            content: 'save money',
+            type: 'v',
+            audio:
+              'http://www.linguee.com/mp3/EN_US/87/87a54e4508b4bdadce59ab1dce8f05b6-200',
+          },
+          to: [
+            {
+              content: 'juntar dinheiro',
+              type: 'v',
+            },
+          ],
+        },
+        {
+          from: {
+            content: 'money laundering',
+            type: 'n',
+            audio:
+              'http://www.linguee.com/mp3/EN_US/4e/4e2fc1ee379cc810479191977f31972a-101',
+          },
+          to: [
+            {
+              content: 'branqueamento de capital',
+              type: 'm',
+            },
+          ],
+        },
+        {
+          from: {
+            content: 'money market',
+            type: 'n',
+            audio:
+              'http://www.linguee.com/mp3/EN_US/50/50fa9efcf444a86b33ce03fee484cd5c-101',
+          },
+          to: [
+            {
+              content: 'mercado monetário',
+              type: 'm',
+            },
+            {
+              content: 'mercado de capitais',
+              type: 'm',
+            },
+          ],
+        },
+      ],
+    };
+    */
 ```
 
 ## Supported Languages ISO 639-2/B codes
@@ -79,6 +195,10 @@ linguee.translate('money', { from: 'eng', to: 'por' }, function(resp) {
 |   lav    |  Latvian   |
 |   est    |  Estonian  |
 |   mlt    |  Maltese   |
+
+## Tests
+
+Run `npm run test`
 
 ## License
 
