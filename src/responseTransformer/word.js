@@ -1,47 +1,50 @@
 module.exports = function(urlBuilder) {
-  const getTranslations = require('./translations')(urlBuilder);
-  const getLessCommonTranslations = require('./lessCommonTranslations');
+  return {
+    getWord: function($wordContainer) {
+      return function($wordContainer) {
+        const $mainDescription = $wordContainer.find('.lemma_desc .tag_lemma');
+        const getTerm = function() {
+          return $mainDescription.find('a.dictLink').text();
+        };
 
-  return function($wordContainer) {
-    const $mainDescription = $wordContainer.find('.lemma_desc .tag_lemma');
-    const getTerm = function() {
-      return $mainDescription.find('a.dictLink').text();
-    };
+        const getAdditionalInformation = function() {
+          const $additionalInfoContainer = $mainDescription.find(
+            '.tag_lemma_context'
+          );
+          return $additionalInfoContainer
+            ? $additionalInfoContainer.text() || null
+            : null;
+        };
 
-    const getAdditionalInformation = function() {
-      const $additionalInfoContainer = $mainDescription.find(
-        '.tag_lemma_context'
-      );
-      return $additionalInfoContainer
-        ? $additionalInfoContainer.text() || null
-        : null;
-    };
+        const getType = function() {
+          return $mainDescription.find('.tag_wordtype').text() || null;
+        };
 
-    const getType = function() {
-      return $mainDescription.find('.tag_wordtype').text() || null;
-    };
+        const getAudio = function() {
+          const $audio = $mainDescription.children('a.audio');
+          const audioPath = $audio ? $audio.attr('id') || null : null;
 
-    const getAudio = function() {
-      const $audio = $mainDescription.children('a.audio');
-      const audioPath = $audio ? $audio.attr('id') || null : null;
+          return audioPath ? urlBuilder.buildAudioUrl(audioPath) : null;
+        };
 
-      return audioPath ? urlBuilder.buildAudioUrl(audioPath) : null;
-    };
+        const $translations = $wordContainer.find(
+          '.lemma_content .translation_lines'
+        );
+        const $lessCommonTranslations = $wordContainer.find(
+          '.lemma_content .translation_lines .translation_group'
+        );
 
-    const $translations = $wordContainer.find(
-      '.lemma_content .translation_lines'
-    );
-    const $lessCommonTranslations = $wordContainer.find(
-      '.lemma_content .translation_lines .translation_group'
-    );
-
-    return {
-      term: getTerm(),
-      audio: getAudio(),
-      additionalInfo: getAdditionalInformation(),
-      type: getType(),
-      translations: getTranslations($translations),
-      lessCommonTranslations: getLessCommonTranslations($lessCommonTranslations)
-    };
+        return {
+          term: getTerm(),
+          audio: getAudio(),
+          additionalInfo: getAdditionalInformation(),
+          type: getType(),
+          translations: getTranslations($translations),
+          lessCommonTranslations: getLessCommonTranslations(
+            $lessCommonTranslations
+          )
+        };
+      };
+    }
   };
 };

@@ -1,5 +1,7 @@
-const linguee = require('./linguee');
+const loadedContainer = require('./config/loadedContainer');
 
-linguee.translate('pretty', { from: 'eng', to: 'fra' }, function(res) {
-  console.log(JSON.stringify(res, null, 2));
-});
+const linguee = loadedContainer.get('linguee');
+
+module.exports = {
+  translate: linguee.translate
+};

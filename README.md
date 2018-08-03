@@ -200,6 +200,16 @@ linguee.translate('money', { from: 'eng', to: 'por' }, function(resp) {
 
 Run `npm run test`
 
+## Architecture
+
+A `linguee` function takes the parameters as input (query, languages) and send the response to the callback.
+
+Internally, the function calls an `urlBuilder` to build the url, and a `responseTransformer` to pass it the response body from linguee, after converting it from 'ISO-8859-1'.
+
+The `responseTransformer` itself is built from several functions that are dedicated to each part of the page to parse.
+
+Inversion of control is guaranteed thanks to a very simple homemade dependency injection container.
+
 ## License
 
 MIT

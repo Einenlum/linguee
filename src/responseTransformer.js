@@ -1,28 +1,36 @@
-const responseTransformer = function(config, urlBuilder, cheerio) {
-  const getWord = require('./responseTransformer/word')(urlBuilder);
-  const getExamples = require('./responseTransformer/examples')(urlBuilder);
+const responseTransformer = function(
+  wordTransformer,
+  examplesTransformer,
+  config,
+  urlBuilder,
+  cheerio
+) {
+  return {
+    transform: function(responseBody, query) {
+      const $ = cheerio.load(responseBody);
+      const $container = $('.exact');
 
-  return function(responseBody, query) {
-    const $ = cheerio.load(responseBody);
-    const $container = $('.exact');
+      const getWords = function() {
+        const $wordContainers = $container.find('.lemma');
+        const words = [];
+        $wordContainers.each(function(index, wordContainer) {
+          words.push(
+            wordTransformer,
+            wordTransformer.getWord($(wordContainer))
+          );
+        });
 
-    const getWords = function() {
-      const $wordContainers = $container.find('.lemma');
-      const words = [];
-      $wordContainers.each(function(index, wordContainer) {
-        words.push(getWord($(wordContainer)));
-      });
+        return words;
+      };
 
-      return words;
-    };
+      const $examples = $('.example_lines');
 
-    const $examples = $('.example_lines');
-
-    return {
-      query: query,
-      words: getWords(),
-      examples: getExamples($examples)
-    };
+      return {
+        query: query,
+        words: getWords(),
+        examples: examplesTransformer.getExamples($examples)
+      };
+    }
   };
 };
 
