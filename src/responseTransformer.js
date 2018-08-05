@@ -11,13 +11,10 @@ const responseTransformer = function(
       const $container = $('.exact');
 
       const getWords = function() {
-        const $wordContainers = $container.find('.lemma');
+        const $wordContainers = $container.children('.lemma');
         const words = [];
         $wordContainers.each(function(index, wordContainer) {
-          words.push(
-            wordTransformer,
-            wordTransformer.getWord($(wordContainer))
-          );
+          words.push(wordTransformer.getWord($(wordContainer)));
         });
 
         return words;

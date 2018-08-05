@@ -9,7 +9,26 @@ const urlBuilder = {
     return `http://somedomain.com/mp3/${path}`;
   }
 };
-const transformResponse = require('../src/responseTransformer')(
+const translationsTransformer = require('../src/responseTransformer/word/translations')(
+  cheerio,
+  urlBuilder
+);
+const lessCommonTranslationsTransformer = require('../src/responseTransformer/word/lessCommonTranslations')(
+  cheerio
+);
+const wordTransformer = require('../src/responseTransformer/word')(
+  urlBuilder,
+  translationsTransformer,
+  lessCommonTranslationsTransformer
+);
+const examplesTransformer = require('../src/responseTransformer/examples')(
+  cheerio,
+  urlBuilder
+);
+
+const responseTransformer = require('../src/responseTransformer')(
+  wordTransformer,
+  examplesTransformer,
   config,
   urlBuilder,
   cheerio
@@ -41,7 +60,10 @@ test('it returns a translation object from an html response', function(assert) {
     const input = fs.readFileSync(getInputPath(example.dir));
     const expected = require(getExpectedPath(example.dir));
 
-    assert.deepEquals(transformResponse(input, example.query), expected);
+    assert.deepEquals(
+      responseTransformer.transform(input, example.query),
+      expected
+    );
   }
   assert.end();
 });

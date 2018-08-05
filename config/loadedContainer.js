@@ -41,7 +41,11 @@ container.register(
     {
       id: 'wordTransformer',
       path: './src/responseTransformer/word',
-      dependencies: ['urlBuilder']
+      dependencies: [
+        'urlBuilder',
+        'wordTranslationsTransformer',
+        'wordLessCommonTranslationsTransformer'
+      ]
     },
     {
       id: 'examplesTransformer',
