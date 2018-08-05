@@ -1,5 +1,10 @@
 const linguee = require('./index');
 
-linguee.translate('money', { from: 'eng', to: 'fra' }, function(response) {
-  console.log(JSON.stringify(response, 2, null));
-});
+linguee
+  .translate('cacaboudin', { from: 'eng', to: 'fra' })
+  .then(function(response) {
+    console.log(JSON.stringify(response, 2, null));
+  })
+  .catch(function(error) {
+    console.log(error);
+  });

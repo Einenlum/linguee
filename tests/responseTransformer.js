@@ -67,3 +67,17 @@ test('it returns a translation object from an html response', function(assert) {
   }
   assert.end();
 });
+
+test('it throws a not found exception if the word was not found', function(assert) {
+  const input = fs.readFileSync(`${__dirname}/fixtures/404.html`);
+  try {
+    const output = responseTransformer.transform(input, 'anriuste');
+  } catch (error) {
+    assert.equals(error.type, 'Not Found');
+    assert.end();
+
+    return;
+  }
+
+  assert.fail();
+});
